@@ -14,7 +14,7 @@ def updateavailableOSVersion():
     print('Updating the last block and adding new block')
     data[lastKey] = newBlock[os.environ['New_OS_build_fp']]
     data[os.environ['New_OS_build_fp']] = newBlock[os.environ['New_OS_build_fp']]
-    json.writeJson(data, './availableOSVersions (15).json')
+    json.writeJson(data, './availableOSVersions.json')
 
 
 def createDataBlock():
@@ -46,10 +46,10 @@ def main():
     formattedDate = date.strftime("%Y%m%d")
     aws = AWSHandler()
 
-    jsonFileS3DownLoadPath = 's3://nextgen-os-pipeline/UltimaOS/dev/availableOSVersions.json'
-    jsonFileS3UploadPath = 's3://nextgen-os-pipeline/UltimaOS/dev/availableOSVersions.json'
-    zipFileS3DownloadPath = f's3://nextgen-os-pipeline/zipFiles/{fileName}'
-    zipFileS3UploadPath = f's3://nextgen-os-pipeline/UltimaOS/dev/{formattedDate}_OS_Update/os-update-pkg.zip'
+    jsonFileS3DownLoadPath = 's3://nextgen-os-pipeline-temp/UltimaOS/dev/availableOSVersions.json'
+    jsonFileS3UploadPath = 's3://nextgen-os-pipeline-temp/UltimaOS/dev/availableOSVersions.json'
+    zipFileS3DownloadPath = f's3://nextgen-os-pipeline-temp/UltimaOS/zipFiles/{fileName}'
+    zipFileS3UploadPath = f's3://nextgen-os-pipeline-temp/UltimaOS/dev/{formattedDate}_OS_Update/os-update-pkg.zip'
 
     # Downloading availableOSVersions.json file from S3
     aws.s3Download(remote_folder_name=jsonFileS3DownLoadPath,
