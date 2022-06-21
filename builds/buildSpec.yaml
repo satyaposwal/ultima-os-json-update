@@ -1,0 +1,10 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+  build:
+    commands:
+      - echo Inside code Build secret = $SECRET_TEXT_CREDS 
+      - python3 main.py
