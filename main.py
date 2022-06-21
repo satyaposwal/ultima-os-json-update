@@ -46,10 +46,10 @@ def main():
     formattedDate = date.strftime("%Y%m%d")
     aws = AWSHandler()
 
-    jsonFileS3DownLoadPath = 's3://nextgen-os-pipeline-temp/UltimaOS/dev/availableOSVersions.json'
-    jsonFileS3UploadPath = 's3://nextgen-os-pipeline-temp/UltimaOS/dev/availableOSVersions.json'
-    zipFileS3DownloadPath = f's3://nextgen-os-pipeline-temp/UltimaOS/zipFiles/{fileName}'
-    zipFileS3UploadPath = f's3://nextgen-os-pipeline-temp/UltimaOS/dev/{formattedDate}_OS_Update/os-update-pkg.zip'
+    jsonFileS3DownLoadPath = 's3://nextgen-os-pipeline-temp1/UltimaOS/dev/availableOSVersions.json'
+    jsonFileS3UploadPath = 's3://nextgen-os-pipeline-temp1/UltimaOS/dev/availableOSVersions.json'
+    zipFileS3DownloadPath = f's3://nextgen-os-pipeline-temp1/UltimaOS/zipFiles/{fileName}'
+    zipFileS3UploadPath = f's3://nextgen-os-pipeline-temp1/UltimaOS/dev/{formattedDate}_OS_Update/os-update-pkg.zip'
 
     # Downloading availableOSVersions.json file from S3
     aws.s3Download(remote_folder_name=jsonFileS3DownLoadPath,
