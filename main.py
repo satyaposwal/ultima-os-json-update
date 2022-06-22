@@ -56,8 +56,10 @@ def main():
     # Downloading artifact file from S3
     aws.s3Download(remote_folder_name=zipFileS3DownloadPath,
                    local_path=fileName)
-    os.system('ls -ltra')
+
+    # update the file
     updateavailableOSVersion()
+
     # Uploading availableOSVersions.json file to S3
     aws.s3Upload(remote_folder_name=jsonFileS3UploadPath,
                  local_path='availableOSVersions.json')
