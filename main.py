@@ -31,7 +31,7 @@ def updateavailableOSVersion():
     data[lastKey] = newBlock[newOsBuildFp]
     data[newOsBuildFp] = newBlock[newOsBuildFp]
     json.writeJson(data, osVersionFile)
-    json.readJsonFile(osVersionFile)
+    json.printJsonFile(osVersionFile)
 
 
 def createDataBlock():
