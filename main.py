@@ -17,9 +17,9 @@ minApkVersion = os.environ['Min_apk_version']
 # S3 constants
 s3URI = 's3://nextgen-os-pipeline-temp1/UltimaOS'
 jsonFileS3DownLoadPath = f'{s3URI}/dev/{osVersionFile}'
-jsonFileS3UploadPath = f'{s3URI}/UltimaOS/dev/{osVersionFile}'
-zipFileS3DownloadPath = f'{s3URI}/UltimaOS/zipFiles/{osUpdatePkgZipFile}'
-zipFileS3UploadPath = f'{s3URI}/UltimaOS/dev/{formattedDate}_OS_Update/{osUpdatePkgZipFile}'
+jsonFileS3UploadPath = f'{s3URI}/dev/{osVersionFile}'
+zipFileS3DownloadPath = f'{s3URI}/zipFiles/{osUpdatePkgZipFile}'
+zipFileS3UploadPath = f'{s3URI}/dev/{formattedDate}_OS_Update/{osUpdatePkgZipFile}'
 
 def updateavailableOSVersion():
     json = JsonHandler()
