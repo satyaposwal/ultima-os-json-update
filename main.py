@@ -13,12 +13,14 @@ osUpdatePkgZipFile = 'os-update-pkg.zip'
 osVersionFile = 'availableOSVersions.json'
 newOsBuildFp = os.environ['New_OS_build_fp']
 minApkVersion = os.environ['Min_apk_version']
+buildNo = os.environ['Build_No']
 
 # S3 constants
+s3ArtifactURI = 's3://nextgen-os-art/UltimaOS'
 s3URI = 's3://nextgen-os-pipeline-temp1/UltimaOS'
 jsonFileS3DownLoadPath = f'{s3URI}/dev/{osVersionFile}'
 jsonFileS3UploadPath = f'{s3URI}/dev/{osVersionFile}'
-zipFileS3DownloadPath = f'{s3URI}/zipFiles/{osUpdatePkgZipFile}'
+zipFileS3DownloadPath = f'{s3ArtifactURI}/zipFiles/BUILD-{buildNo}/{osUpdatePkgZipFile}'
 zipFileS3UploadPath = f'{s3URI}/dev/{formattedDate}_OS_Update/{osUpdatePkgZipFile}'
 
 def updateavailableOSVersion():

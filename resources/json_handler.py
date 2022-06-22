@@ -14,7 +14,7 @@ class JsonHandler():
 
     def writeJson(self, data, filePath):
         with open(filePath, 'w') as f:
-            json.dump(data, f, indent=2)
+            json.dump(data, f, indent=4)
 
     def printJsonFile(self, filePath):
         with open(filePath, 'r') as f:
