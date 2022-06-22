@@ -5,6 +5,5 @@ phases:
     runtime-versions:
       python: 3.9
   build:
-    commands:
-      - echo Inside code Build secret = $SECRET_TEXT_CREDS 
+    commands: 
       - python3 main.py

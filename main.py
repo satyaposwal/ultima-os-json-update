@@ -7,14 +7,14 @@ from datetime import date, datetime
 
 def updateavailableOSVersion():
     json = JsonHandler()
-    data = json.readJson('./availableOSVersions.json')
+    data = json.readJson('availableOSVersions.json')
     keys = list(data.keys())
     lastKey = keys[len(keys)-1]
     newBlock = createDataBlock()
     print('Updating the last block and adding new block')
     data[lastKey] = newBlock[os.environ['New_OS_build_fp']]
     data[os.environ['New_OS_build_fp']] = newBlock[os.environ['New_OS_build_fp']]
-    json.writeJson(data, './availableOSVersions.json')
+    json.writeJson(data, 'availableOSVersions.json')
 
 
 def createDataBlock():
@@ -45,7 +45,6 @@ def main():
     date = datetime.now()
     formattedDate = date.strftime("%Y%m%d")
     aws = AWSHandler()
-
     jsonFileS3DownLoadPath = 's3://nextgen-os-pipeline-temp1/UltimaOS/dev/availableOSVersions.json'
     jsonFileS3UploadPath = 's3://nextgen-os-pipeline-temp1/UltimaOS/dev/availableOSVersions.json'
     zipFileS3DownloadPath = f's3://nextgen-os-pipeline-temp1/UltimaOS/zipFiles/{fileName}'
@@ -57,7 +56,7 @@ def main():
     # Downloading artifact file from S3
     aws.s3Download(remote_folder_name=zipFileS3DownloadPath,
                    local_path=fileName)
-
+    
     updateavailableOSVersion()
     # Uploading availableOSVersions.json file to S3
     aws.s3Upload(remote_folder_name=jsonFileS3UploadPath,
