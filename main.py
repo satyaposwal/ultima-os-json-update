@@ -5,28 +5,42 @@ from resources.json_handler import JsonHandler
 from datetime import date, datetime
 
 
+date = datetime.now()
+formattedDate = date.strftime("%Y%m%d")
+
+# Files constants
+osUpdatePkgZipFile = 'os-update-pkg.zip'
+osVersionFile = 'availableOSVersions.json'
+newOsBuildFp = os.environ['New_OS_build_fp']
+minApkVersion = os.environ['Min_apk_version']
+
+# S3 constants
+s3URI = 's3://nextgen-os-pipeline-temp1/UltimaOS'
+jsonFileS3DownLoadPath = f'{s3URI}/dev/{osVersionFile}'
+jsonFileS3UploadPath = f'{s3URI}/UltimaOS/dev/{osVersionFile}'
+zipFileS3DownloadPath = f'{s3URI}/UltimaOS/zipFiles/{osUpdatePkgZipFile}'
+zipFileS3UploadPath = f'{s3URI}/UltimaOS/dev/{formattedDate}_OS_Update/{osUpdatePkgZipFile}'
+
 def updateavailableOSVersion():
     json = JsonHandler()
-    data = json.readJson('availableOSVersions.json')
+    data = json.readJson(osVersionFile)
     keys = list(data.keys())
     lastKey = keys[len(keys)-1]
     newBlock = createDataBlock()
     print('Updating the last block and adding new block')
-    data[lastKey] = newBlock[os.environ['New_OS_build_fp']]
-    data[os.environ['New_OS_build_fp']] = newBlock[os.environ['New_OS_build_fp']]
-    json.writeJson(data, 'availableOSVersions.json')
+    data[lastKey] = newBlock[newOsBuildFp]
+    data[newOsBuildFp] = newBlock[newOsBuildFp]
+    json.writeJson(data, osVersionFile)
 
 
 def createDataBlock():
-    date = datetime.now()
-    formattedDate = date.strftime("%Y%m%d")
     newBlock = {
-        os.environ['New_OS_build_fp']: {
-            'availableOSBuildFingerprint': os.environ['New_OS_build_fp'],
+        newOsBuildFp: {
+            'availableOSBuildFingerprint': newOsBuildFp,
             'fileName': 'os-update-pkg.zip',
             'fileLocation': f'{formattedDate}_OS_Update/os-update-pkg.zip',
             'hash': getFileHash(),
-            'minApkVersion': os.environ['Min_apk_version']
+            'minApkVersion': minApkVersion
         }
     }
     return newBlock
@@ -41,31 +55,23 @@ def getFileHash():
 
 
 def main():
-    fileName = os.environ["File_Name"]
-    date = datetime.now()
-    formattedDate = date.strftime("%Y%m%d")
     aws = AWSHandler()
-    jsonFileS3DownLoadPath = 's3://nextgen-os-pipeline-temp1/UltimaOS/dev/availableOSVersions.json'
-    jsonFileS3UploadPath = 's3://nextgen-os-pipeline-temp1/UltimaOS/dev/availableOSVersions.json'
-    zipFileS3DownloadPath = f's3://nextgen-os-pipeline-temp1/UltimaOS/zipFiles/{fileName}'
-    zipFileS3UploadPath = f's3://nextgen-os-pipeline-temp1/UltimaOS/dev/{formattedDate}_OS_Update/os-update-pkg.zip'
-
     # Downloading availableOSVersions.json file from S3
     aws.s3Download(remote_folder_name=jsonFileS3DownLoadPath,
-                   local_path='availableOSVersions.json')
+                   local_path=osVersionFile)
     # Downloading artifact file from S3
     aws.s3Download(remote_folder_name=zipFileS3DownloadPath,
-                   local_path=fileName)
+                   local_path=osUpdatePkgZipFile)
 
     # update the file
     updateavailableOSVersion()
 
     # Uploading availableOSVersions.json file to S3
     aws.s3Upload(remote_folder_name=jsonFileS3UploadPath,
-                 local_path='availableOSVersions.json')
+                 local_path=osVersionFile)
     # Uploading artifact file to S3
     aws.s3Upload(remote_folder_name=zipFileS3UploadPath,
-                 local_path='os-update-pkg.zip')
+                 local_path=osUpdatePkgZipFile)
 
 
 if __name__ == '__main__':
